@@ -1,4 +1,4 @@
-
+const Discord = require('discord.js');
 //fonction qui répond le nombre d'expérence et de cristal de héro pour up un perso d'un niveau a un autre
 let exp = (message,Exp) =>{
     const tabMessage = message.content.split(' ');
@@ -21,7 +21,7 @@ let exp = (message,Exp) =>{
                     console.log("erreur finding data : " + message.content);
                 }
                 else{
-                    message.channel.send("pour monter du niveau 1 au niveau " + tabMessage[1] + " il vous faut : \n" +  "``" + data.expTotal + "`` d'experience");
+                    sendEmbed(message,"Pour monter du niveau 1 au niveau " + tabMessage[1] + " il vous faut : \n" +  "``" + data.expTotal + "`` d'experience", "Experience");
                 }
             })
         }
@@ -56,7 +56,7 @@ let exp = (message,Exp) =>{
                         else
                         {
                             const summ = data2.expTotal- data1.expTotal;
-                            message.channel.send("pour monter du niveau " + tabMessage[1] + " au niveau " + tabMessage[2] + " il vous faut : " +  "``" + summ + "`` d'experience");
+                            sendEmbed(message, "Pour monter du niveau " + tabMessage[1] + " au niveau " + tabMessage[2] + " il vous faut : " +  "``" + summ + "`` d'experience", "Experience");
                         }
                     });
                 }
@@ -97,7 +97,7 @@ let exp = (message,Exp) =>{
                         {
                             const summexp = data2.expTotal- data1.expTotal;
                             const summcristal = (data2.cristal===null ? 0:data2.cristal) - (data1.cristal===null ? 0:data1.cristal);
-                            message.channel.send("pour monter du niveau " + tabMessage[1] + " au niveau " + tabMessage[2] + " il vous faut : " +  "``" + summexp + "`` d'experience et ``" + summcristal +"`` cristals de hero");
+                            sendEmbed(message, "Pour monter du niveau " + tabMessage[1] + " au niveau " + tabMessage[2] + " il vous faut : " +  "``" + summexp + "`` d'experience et ``" + summcristal +"`` cristals de hero", "Experience");
                         }
                     });
                 }
@@ -112,12 +112,24 @@ let exp = (message,Exp) =>{
     }
 }
 
+//
 let hero = (message, Hero) =>{
 
 }
 
 let help = (message) =>{
     message.channel.send("HELP :NotLikeThis:");
+}
+
+
+function sendEmbed(message,text, titre)
+{
+    const embed = new Discord.RichEmbed();
+    embed.setTitle(titre);
+    embed.setDescription(text);
+    embed.setColor(0x00AE86);
+    embed.setThumbnail("https://cdn.discordapp.com/attachments/804446503636041759/804740255928287243/Capture_d_Acran_2021-01-29_A__16.48.55-removebg-preview.png");
+    message.channel.send({embed});
 }
 
 module.exports = {
