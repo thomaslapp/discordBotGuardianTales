@@ -1,6 +1,6 @@
 
 //fonction qui répond le nombre d'expérence et de cristal de héro pour up un perso d'un niveau a un autre
-function exp(message)
+export function exp(message)
 {
     const tabMessage = message.content.split(' ');
     if(tabMessage.lenght() == 1 || tabMessage.lenght() > 4 )
@@ -51,12 +51,12 @@ function exp(message)
     }
 }
 
-function hero(content)
+export function hero(content)
 {
 
 }
 
-function help()
+export function help()
 {
 
 }
