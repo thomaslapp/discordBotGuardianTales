@@ -80,15 +80,15 @@ let exp = (message,Exp) =>{
         }
         else
         {
-            //chercher de lvl arg2 a lvl arg3 pour une rareté arg4
-            Exp.findOne({where : { lvl : tabMessage[1], rarete : (tabMessage[1]<69 ? null:tabMessage[1]) }}).then((data1) => {
+            //chercher de lvl arg1 a lvl arg2 pour une rareté arg3
+            Exp.findOne({where : { lvl : tabMessage[1], rarete : (tabMessage[1]<=69 ? null:tabMessage[3]) }}).then((data1) => {
                 if(data1 === null)
                 {
                     console.log("erreur finding data 1 : " + message.content);
                 }
                 else
                 {
-                    Exp.findOne({where : { lvl : tabMessage[2], rarete :(tabMessage[2]<69 ? null:tabMessage[2]) }}).then((data2) => {
+                    Exp.findOne({where : { lvl : tabMessage[2], rarete :(tabMessage[2]<=69 ? null:tabMessage[3]) }}).then((data2) => {
                         if(data2 === null)
                         {
                             console.log("erreur finding data 2 : " + message.content);
@@ -97,7 +97,7 @@ let exp = (message,Exp) =>{
                         {
                             const summexp = data2.expTotal- data1.expTotal;
                             const summcristal = (data2.cristal===null ? 0:data2.cristal) - (data1.cristal===null ? 0:data1.cristal);
-                            sendEmbed(message, "Pour monter du niveau " + tabMessage[1] + " au niveau " + tabMessage[2] + " il vous faut : " +  "``" + summexp + "`` d'experience et ``" + summcristal +"`` cristals de hero", "Experience");
+                            sendEmbed(message, "Pour monter du niveau " + tabMessage[1] + " au niveau " + tabMessage[2] + " il vous faut : " +  "``" + summexp + "`` d'experience et ``" + summcristal +"`` cristals de hero pour un hero de rareté "+ tabMessage[3], "Experience");
                         }
                     });
                 }
