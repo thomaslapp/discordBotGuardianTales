@@ -74,7 +74,7 @@ client.on('ready', () => {
 
 client.on("message", message => {
   //mettre l'id du channel voulu
-  if(message.channel.id === "804480084131708929")
+  if(message.channel.id === "804480084131708929" || message.channel.id === "804446503636041759")
   {
     if(message.content.startsWith('?'))
     {
@@ -85,7 +85,7 @@ client.on("message", message => {
       }
       else if(message.content.startsWith('?hero'))
       {
-        hero(message,Hero);
+        //hero(message,Hero);
       }
       else
       {

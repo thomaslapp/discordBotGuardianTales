@@ -8,7 +8,7 @@ let exp = (message,Exp) =>{
     }
     else if(tabMessage.length == 2)
     {
-        if(tabMessage[2] <= 1 || tabMessage[2] > 69)
+        if(tabMessage[2] <= 1 && tabMessage[2] > 69)
         {
             message.channel.send("Le niveau doit etre entre 1 et 69");
         }
@@ -28,7 +28,7 @@ let exp = (message,Exp) =>{
     }
     else if(tabMessage.length == 3)
     {
-        if(tabMessage[1] <= 1 || tabMessage[1] > 69 || tabMessage[2] <= 1 || tabMessage[2] > 69)
+        if(tabMessage[1] <= 1 && tabMessage[1] > 69 && tabMessage[2] <= 1 && tabMessage[2] > 69)
         {
             message.channel.send("Les niveaux doivent etre entre 1 et 69");
         }
@@ -41,7 +41,7 @@ let exp = (message,Exp) =>{
             else
             {
                 //chercher de lvl arg2 a lvl arg3
-            Exp.findOne({where : { lvl : tabMessage[1] }}).then((data1) => {
+                Exp.findOne({where : { lvl : tabMessage[1] }}).then((data1) => {
                 if(data1 === null)
                 {
                     console.log("erreur finding data 1 : " + message.content);
@@ -51,12 +51,12 @@ let exp = (message,Exp) =>{
                     Exp.findOne({where : { lvl : tabMessage[2] }}).then((data2) => {
                         if(data2 === null)
                         {
-                            console.log("erreur finding data 1 : " + message.content);
+                            console.log("erreur finding data 2 : " + message.content);
                         }
                         else
                         {
                             const summ = data2.expTotal- data1.expTotal;
-                            message.channel.send("pour monter du niveau " + tabMessage[1] + " au niveau " + tabMessage[2] + " il vous faut : \n" +  "``" + summ + "`` d'experience");
+                            message.channel.send("pour monter du niveau " + tabMessage[1] + " au niveau " + tabMessage[2] + " il vous faut : " +  "``" + summ + "`` d'experience");
                         }
                     });
                 }
@@ -66,7 +66,7 @@ let exp = (message,Exp) =>{
     }
     else if(tabMessage.length == 4)
     {
-        if(tabMessage[1] <= 1 || tabMessage[1] > 74 || tabMessage[2] <= 1 || tabMessage[2] > 74)
+        if(tabMessage[1] > 1 && tabMessage[1] > 74 && tabMessage[2] < 1 && tabMessage[2] > 74)
         {
             message.channel.send("Les niveaux doivent etre entre 1 et 74");
         }
@@ -76,12 +76,32 @@ let exp = (message,Exp) =>{
         }
         else if(tabMessage[3] == 1 && (tabMessage[1] > 69 || tabMessage[2] > 69))
         {
-            message.channel.send("Tu veux vraiment rupture limite un perso 1 étoile ???");
+            message.channel.send("Tu veux vraiment rupture limite un perso 1 étoile :dono: ???");
         }
         else
         {
             //chercher de lvl arg2 a lvl arg3 pour une rareté arg4
-            
+            Exp.findOne({where : { lvl : tabMessage[1], rarete : (tabMessage[1]<69 ? null:tabMessage[1]) }}).then((data1) => {
+                if(data1 === null)
+                {
+                    console.log("erreur finding data 1 : " + message.content);
+                }
+                else
+                {
+                    Exp.findOne({where : { lvl : tabMessage[2], rarete :(tabMessage[2]<69 ? null:tabMessage[2]) }}).then((data2) => {
+                        if(data2 === null)
+                        {
+                            console.log("erreur finding data 2 : " + message.content);
+                        }
+                        else
+                        {
+                            const summexp = data2.expTotal- data1.expTotal;
+                            const summcristal = (data2.cristal===null ? 0:data2.cristal) - (data1.cristal===null ? 0:data1.cristal);
+                            message.channel.send("pour monter du niveau " + tabMessage[1] + " au niveau " + tabMessage[2] + " il vous faut : " +  "``" + summexp + "`` d'experience et ``" + summcristal +"`` cristals de hero");
+                        }
+                    });
+                }
+            });
         }
     }
     else
@@ -97,7 +117,7 @@ let hero = (message, Hero) =>{
 }
 
 let help = (message) =>{
-    message.channel.send("HELP");
+    message.channel.send("HELP :NotLikeThis:");
 }
 
 module.exports = {
