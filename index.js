@@ -81,7 +81,7 @@ client.on("message", message => {
       const content = message.content;
       if(message.content.startsWith('?exp'))
       {
-        exp(message,Exp);
+        exp(message, Exp, client);
       }
       else if(message.content.startsWith('?hero'))
       {
@@ -89,9 +89,11 @@ client.on("message", message => {
       }
       else
       {
-        help(message);
+        help(message, client);
       }
     }
   }
 })
+
 client.login(token);
+

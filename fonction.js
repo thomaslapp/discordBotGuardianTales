@@ -1,16 +1,28 @@
 const Discord = require('discord.js');
 //fonction qui répond le nombre d'expérence et de cristal de héro pour up un perso d'un niveau a un autre
-let exp = (message,Exp) =>{
-    const tabMessage = message.content.split(' ');
-    if(tabMessage.length == 1 || tabMessage.length > 4 )
+let exp = (message, Exp, client) =>{
+    const tabMessageRes = message.content.split(' ');
+    var tabMessage = [-1,-1,-1,-1];
+    let erreur = false;
+    for(let i = 1 ; i < tabMessageRes.length && !erreur; i++ )
+    {
+        if(!Number.isInteger(Number(tabMessageRes[i])))
+        {
+            erreur = true;
+        }
+        tabMessage[i] = Number(tabMessageRes[i]);
+    }
+
+
+    if(tabMessageRes.length == 1 || tabMessageRes.length > 4 || erreur)
     {
         message.channel.send('USAGE : ``?exp niveauMin niveauMax rareté`` \n');
     }
-    else if(tabMessage.length == 2)
+    else if(tabMessageRes.length == 2)
     {
-        if(tabMessage[2] <= 1 && tabMessage[2] > 69)
+        if(tabMessage[1] < 1 || tabMessage[1] > 69)
         {
-            message.channel.send("Le niveau doit etre entre 1 et 69");
+            message.channel.send("Le niveau doit etre compres entre 1 et 69");
         }
         else
         {
@@ -26,9 +38,9 @@ let exp = (message,Exp) =>{
             })
         }
     }
-    else if(tabMessage.length == 3)
+    else if(tabMessageRes.length == 3)
     {
-        if(tabMessage[1] <= 1 && tabMessage[1] > 69 && tabMessage[2] <= 1 && tabMessage[2] > 69)
+        if(tabMessage[1] < 1 || tabMessage[1] > 69 || tabMessage[2] < 1 || tabMessage[2] > 69)
         {
             message.channel.send("Les niveaux doivent etre entre 1 et 69");
         }
@@ -36,7 +48,7 @@ let exp = (message,Exp) =>{
         {
             if(tabMessage[1] > tabMessage[2])
             {
-                message.channel.send("Le premier argument dois être plus petit que le deuxième");
+                message.channel.send("Le premier argument : "+ tabMessage[1] +", dois être plus petit que le deuxième : " + tabMessage[2]);
             }
             else
             {
@@ -64,9 +76,9 @@ let exp = (message,Exp) =>{
             }
         }
     }
-    else if(tabMessage.length == 4)
+    else if(tabMessageRes.length == 4)
     {
-        if(tabMessage[1] > 1 && tabMessage[1] > 74 && tabMessage[2] < 1 && tabMessage[2] > 74)
+        if(tabMessage[1] < 1 || tabMessage[1] > 74 || tabMessage[2] < 1 || tabMessage[2] > 74)
         {
             message.channel.send("Les niveaux doivent etre entre 1 et 74");
         }
@@ -76,7 +88,8 @@ let exp = (message,Exp) =>{
         }
         else if(tabMessage[3] == 1 && (tabMessage[1] > 69 || tabMessage[2] > 69))
         {
-            message.channel.send("Tu veux vraiment rupture limite un perso 1 étoile :dono: ???");
+            const emoji = client.emojis.find(emoji => emoji.name === "dono");
+            message.channel.send("Tu veux vraiment rupture limite un perso 1 étoile "+ emoji +" ???");
         }
         else
         {
@@ -97,7 +110,7 @@ let exp = (message,Exp) =>{
                         {
                             const summexp = data2.expTotal- data1.expTotal;
                             const summcristal = (data2.cristal===null ? 0:data2.cristal) - (data1.cristal===null ? 0:data1.cristal);
-                            sendEmbed(message, "Pour monter du niveau " + tabMessage[1] + " au niveau " + tabMessage[2] + " il vous faut : " +  "``" + summexp + "`` d'experience et ``" + summcristal +"`` cristals de hero pour un hero de rareté "+ tabMessage[3], "Experience");
+                            sendEmbed(message, "Pour monter du niveau " + tabMessage[1] + " au niveau " + tabMessage[2] + " il vous faut : " +  "``" + summexp + "`` d'experience" + (summcristal==0?"":" et ``" + summcristal +"`` cristals de hero pour un hero de rareté "+ tabMessage[3]));
                         }
                     });
                 }
@@ -117,8 +130,9 @@ let hero = (message, Hero) =>{
 
 }
 
-let help = (message) =>{
-    message.channel.send("HELP :NotLikeThis:");
+let help = (message, client) =>{
+    const emoji = client.emojis.find(emoji => emoji.name === "NotLikeThis");
+    message.channel.send("HELP " +emoji);
 }
 
 
@@ -135,5 +149,5 @@ function sendEmbed(message,text, titre)
 module.exports = {
     exp,
     hero,
-    help
+    help,
 }
