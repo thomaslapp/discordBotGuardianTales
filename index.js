@@ -1,4 +1,4 @@
-let { exp, hero, help } = require('./fonction');
+let { exp, hero, help, shard } = require('./fonction');
 const Discord = require('discord.js');
 const {token} = require('./config.json');
 const client = new Discord.Client();
@@ -26,9 +26,33 @@ const Exp = sequelize.define('experience', {
   }
 });
 
+const Shard = sequelize.define('shard', {
+  nbEtoiles: {
+    type: DataTypes.INTEGER,
+  },
+  rarete: {
+    type: DataTypes.INTEGER
+  },
+  coutTotal: {
+    type: DataTypes.INTEGER
+  }
+});
+
+const DropRate =  sequelize.define('dropRate', {
+  lvl: {
+    type: DataTypes.INTEGER,
+  },
+  uniqueHero: {
+    type: DataTypes.INTEGER
+  },
+  rareHero: {
+    type: DataTypes.INTEGER
+  }
+});
+
 const Hero  = sequelize.define('hero', {
   nom: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
   },
   element: {
     type: DataTypes.STRING
@@ -74,7 +98,7 @@ client.on('ready', () => {
 
 client.on("message", message => {
   //mettre l'id du channel voulu
-  if(message.channel.id === "804480084131708929" || message.channel.id === "804446503636041759")
+  if(message.channel.id === "804480084131708929" || message.channel.id === "804446503636041759" || message.channel.id === "568174282514104320")
   {
     if(message.content.startsWith('?'))
     {
@@ -82,6 +106,10 @@ client.on("message", message => {
       if(message.content.startsWith('?exp'))
       {
         exp(message, Exp, client);
+      }
+      else if(message.content.startsWith('?shard'))
+      {
+        shard(message, Shard);
       }
       else if(message.content.startsWith('?hero'))
       {
@@ -96,4 +124,3 @@ client.on("message", message => {
 })
 
 client.login(token);
-

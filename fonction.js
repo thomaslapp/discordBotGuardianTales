@@ -110,7 +110,7 @@ let exp = (message, Exp, client) =>{
                         {
                             const summexp = data2.expTotal- data1.expTotal;
                             const summcristal = (data2.cristal===null ? 0:data2.cristal) - (data1.cristal===null ? 0:data1.cristal);
-                            sendEmbed(message, "Pour monter du niveau " + tabMessage[1] + " au niveau " + tabMessage[2] + " il vous faut : " +  "``" + summexp + "`` d'experience" + (summcristal==0?"":" et ``" + summcristal +"`` cristals de hero pour un hero de rareté "+ tabMessage[3]));
+                            sendEmbed(message, "Pour monter du niveau " + tabMessage[1] + " au niveau " + tabMessage[2] + " il vous faut : " +  "``" + summexp + "`` d'experience" + (summcristal==0?"":" et ``" + summcristal +"`` cristaux de hero pour un hero de rareté "+ tabMessage[3]), "Experience");
                         }
                     });
                 }
@@ -125,16 +125,76 @@ let exp = (message, Exp, client) =>{
     }
 }
 
-//
 let hero = (message, Hero) =>{
 
 }
 
 let help = (message, client) =>{
+
     const emoji = client.emojis.find(emoji => emoji.name === "NotLikeThis");
     message.channel.send("HELP " +emoji);
 }
 
+let shard = (message, Shard) =>{
+    const tabMessage = message.content.split(' ');
+    let erreur = false;
+    for(let i = 1 ; i < tabMessage.length && !erreur; i++ )
+    {
+        if(!Number.isInteger(Number(tabMessage[i])))
+        {
+            erreur = true;
+        }
+        tabMessage[i] = Number(tabMessage[i]);
+    }
+    if(erreur || tabMessage.length != 4)
+    {
+        message.channel.send('USAGE : ``?shard NbEtoileMin NbEtoileMax rarete`` \n');
+    }
+    else
+    {
+        if(tabMessage[1] < 1 || tabMessage[1] > 5 || tabMessage[2] < 1 || tabMessage[2] > 5 )
+        {
+            message.channel.send("Le nombre d'étoile doit etre compris entre 1 et 5");
+        }
+        else if(tabMessage[3] < 1 || tabMessage[3] > 3)
+        {
+            message.channel.send("La rareté doit etre compris entre 1 et 3");
+        }
+        else if (tabMessage[2] < tabMessage[1])
+        {
+            message.channel.send("Le premier argument : "+ tabMessage[1] +", dois être plus petit que le deuxième : " + tabMessage[2]);
+        }
+        else
+        {
+            Shard.findOne({where : { nbEtoiles : tabMessage[1], rarete : tabMessage[3] }}).then((data1) => {
+                if(data1 === null)
+                {
+                    console.log("erreur finding data 1 : " + message.content);
+                }
+                else
+                {
+                    Shard.findOne({where : { nbEtoiles : tabMessage[2], rarete : tabMessage[3] }}).then((data2) => {
+                        if(data2 === null)
+                        {
+                            console.log("erreur finding data 2 : " + message.content);
+                        }
+                        else
+                        {
+                            const nbShard = data2.coutTotal - data1.coutTotal;
+                            const ShardPerLevel = (tabMessage[3]==3?1.4:4);
+                            const nbLevel = nbShard/ShardPerLevel;
+                            const nbCafe = nbLevel*10;
+                            const cafePerDay = 250;
+                            const nbDay = nbCafe/cafePerDay;
+
+                            sendEmbed(message, "Pour monter un hero " + tabMessage[1] + " étoile(s) à " + tabMessage[2] + " étoile(s) pour une rareté de " + tabMessage[3] + ", il vous faut : " + nbShard + " shards.\nSoit faire " + Math.round(nbLevel) + " niveau, " + Math.round(nbCafe) + " café, environ " + Math.round(nbDay) + " jours avec en moyenne "+ Math.round(cafePerDay) + " de café par jours" ,"Shard total");
+                        }
+                    });
+                }
+            });
+        }
+    }
+}
 
 function sendEmbed(message,text, titre)
 {
@@ -150,4 +210,5 @@ module.exports = {
     exp,
     hero,
     help,
+    shard
 }
