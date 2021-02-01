@@ -135,7 +135,7 @@ let help = (message, client) =>{
     message.channel.send("HELP " +emoji);
 }
 
-let shard = (message, Shard) =>{
+let evo = (message, Shard) =>{
     const tabMessage = message.content.split(' ');
     let erreur = false;
     for(let i = 1 ; i < tabMessage.length && !erreur; i++ )
@@ -148,7 +148,7 @@ let shard = (message, Shard) =>{
     }
     if(erreur || tabMessage.length != 4)
     {
-        message.channel.send('USAGE : ``?shard NbEtoileMin NbEtoileMax rarete`` \n');
+        message.channel.send('USAGE : ``?evo NbEtoileMin NbEtoileMax rarete`` \n');
     }
     else
     {
@@ -184,15 +184,50 @@ let shard = (message, Shard) =>{
                             const ShardPerLevel = (tabMessage[3]==3?1.4:4);
                             const nbLevel = nbShard/ShardPerLevel;
                             const nbCafe = nbLevel*10;
-                            const cafePerDay = 250;
+                            const cafePerDay = 260;
                             const nbDay = nbCafe/cafePerDay;
 
-                            sendEmbed(message, "Pour monter un hero " + tabMessage[1] + " étoile(s) à " + tabMessage[2] + " étoile(s) pour une rareté de " + tabMessage[3] + ", il vous faut : " + nbShard + " shards.\nSoit faire " + Math.round(nbLevel) + " niveau, " + Math.round(nbCafe) + " café, environ " + Math.round(nbDay) + " jours avec en moyenne "+ Math.round(cafePerDay) + " de café par jours" ,"Shard total");
+                            sendEmbed(message, "Pour monter un hero " + tabMessage[1] + " étoile(s) à " + tabMessage[2] + " étoile(s) pour une rareté de " + tabMessage[3] + ", il vous faut : " + nbShard + " shards.\nSoit faire " + Math.round(nbLevel) + " niveau, " + Math.round(nbCafe) + " café, environ " + Math.round(nbDay) + " jours avec en moyenne "+ Math.round(cafePerDay) + " de café par jours" ,"Evolution");
                         }
                     });
                 }
             });
         }
+    }
+}
+
+let shard = (message) => {
+    const tabMessage = message.content.split(' ');
+    let erreur = false;
+    for(let i = 1 ; i < tabMessage.length && !erreur; i++ )
+    {
+        if(!Number.isInteger(Number(tabMessage[i])))
+        {
+            erreur = true;
+        }
+        tabMessage[i] = Number(tabMessage[i]);
+    }
+    if(erreur || tabMessage.length != 3)
+    {
+        message.channel.send('USAGE : ``?shard nbShard rarete``');
+    }
+    else if(tabMessage[2] < 1 || tabMessage[2] > 3)
+    {
+        message.channel.send('Connais pas cette rareté');
+    }
+    else if(tabMessage[1] <= 0)
+    {
+        message.channel.send('Veuillez entrer une valeur positive');
+    }
+    else
+    {
+        const nbShard = tabMessage[1]
+        const ShardPerLevel = (tabMessage[2]==3?1.4:4);
+        const nbLevel = nbShard/ShardPerLevel;
+        const nbCafe = nbLevel*10;
+        const cafePerDay = 260;
+        const nbDay = nbCafe/cafePerDay;
+        sendEmbed(message, "Pour obtenir " + tabMessage[1] + " shards pour un perso de rareté " + tabMessage[2] + " il vous faudra faire " + Math.round(nbLevel) + " niveau soit " + Math.round(nbCafe) + " de café, " + Math.round(nbDay) + " jours en moyenne, avec " + Math.round(cafePerDay) + " de café par jours","Shard");
     }
 }
 
@@ -210,5 +245,6 @@ module.exports = {
     exp,
     hero,
     help,
+    evo,
     shard
 }

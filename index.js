@@ -1,4 +1,4 @@
-let { exp, hero, help, shard } = require('./fonction');
+let { exp, hero, help, evo, shard } = require('./fonction');
 const Discord = require('discord.js');
 const {token} = require('./config.json');
 const client = new Discord.Client();
@@ -34,18 +34,6 @@ const Shard = sequelize.define('shard', {
     type: DataTypes.INTEGER
   },
   coutTotal: {
-    type: DataTypes.INTEGER
-  }
-});
-
-const DropRate =  sequelize.define('dropRate', {
-  lvl: {
-    type: DataTypes.INTEGER,
-  },
-  uniqueHero: {
-    type: DataTypes.INTEGER
-  },
-  rareHero: {
     type: DataTypes.INTEGER
   }
 });
@@ -86,6 +74,9 @@ const Hero  = sequelize.define('hero', {
   },
   chaineTwo: {
     type: DataTypes.STRING
+  },
+  image: {
+    type: DataTypes.STRING
   }
 });
 
@@ -107,13 +98,17 @@ client.on("message", message => {
       {
         exp(message, Exp, client);
       }
-      else if(message.content.startsWith('?shard'))
+      else if(message.content.startsWith('?evo'))
       {
-        shard(message, Shard);
+        evo(message, Shard);
       }
       else if(message.content.startsWith('?hero'))
       {
         //hero(message,Hero);
+      }
+      else if(message.content.startsWith('?shard'))
+      {
+        shard(message)
       }
       else
       {
