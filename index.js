@@ -1,6 +1,5 @@
 let { exp, help, evo, shard, test, type, party, heros } = require('./fonction');
 const Discord = require('discord.js');
-const { token } = require('./config.json');
 const client = new Discord.Client();
 
 
