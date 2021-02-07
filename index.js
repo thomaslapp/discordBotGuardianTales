@@ -120,7 +120,6 @@ client.on("message", (message) => {
       help(message, client);
     }
   }
-}
 })
 
 client.login(process.env.TOKEN);
