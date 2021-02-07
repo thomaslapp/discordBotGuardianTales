@@ -1,6 +1,6 @@
-let { exp, hero, help, evo, shard } = require('./fonction');
+let { exp, help, evo, shard, test, type, party, heros } = require('./fonction');
 const Discord = require('discord.js');
-const {token} = require('./config.json');
+const { token } = require('./config.json');
 const client = new Discord.Client();
 
 
@@ -38,7 +38,7 @@ const Shard = sequelize.define('shard', {
   }
 });
 
-const Hero  = sequelize.define('hero', {
+const Hero = sequelize.define('hero', {
   nom: {
     type: DataTypes.STRING,
   },
@@ -63,10 +63,16 @@ const Hero  = sequelize.define('hero', {
   reducDamage: {
     type: DataTypes.INTEGER
   },
-  partyBuffType: {
+  partyBuffType1: {
     type: DataTypes.STRING,
   },
-  partyBuffNbr: {
+  partyBuffNbr1: {
+    type: DataTypes.INTEGER
+  },
+  partyBuffType2: {
+    type: DataTypes.STRING,
+  },
+  partyBuffNbr2: {
     type: DataTypes.INTEGER
   },
   chaineOne: {
@@ -87,31 +93,37 @@ client.on('ready', () => {
   console.info(`Logged in as ${client.user.tag}!`);
 });
 
-client.on("message", message => {
+client.on("message", (message) => {
   //mettre l'id du channel voulu
-  if(message.channel.id === "804480084131708929" || message.channel.id === "804446503636041759" || message.channel.id === "568174282514104320")
-  {
-    if(message.content.startsWith('?'))
-    {
+  if (message.channel.id === "804480084131708929" || message.channel.id === "804446503636041759" || message.channel.id === "568174282514104320") {
+    if (message.content.startsWith('?')) {
       const content = message.content;
-      if(message.content.startsWith('?exp'))
-      {
+      if (message.content.startsWith('?exp')) {
         exp(message, Exp, client);
       }
-      else if(message.content.startsWith('?evo'))
-      {
+      else if (message.content.startsWith('?evo')) {
         evo(message, Shard);
       }
-      else if(message.content.startsWith('?hero'))
-      {
-        //hero(message,Hero);
+      else if (message.content.startsWith('?heros')) {
+        heros(message, client, Hero);
       }
-      else if(message.content.startsWith('?shard'))
-      {
-        shard(message)
+      else if (message.content.startsWith('?shard')) {
+        shard(message);
       }
-      else
-      {
+      else if (message.content.startsWith('?type')) {
+        type(message, client);
+      }
+      else if (message.content.startsWith('?party')) {
+        party(message, Hero);
+      }
+
+
+
+
+      else if (message.content.startsWith('?test')) {
+        test(message, client);
+      }
+      else {
         help(message, client);
       }
     }
