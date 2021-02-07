@@ -102,9 +102,43 @@ let exp = (message, Exp, client) => {
 }
 
 let help = (message, client) => {
+    if (message.content == '?help') {
+        let text = "Les différentes commandes sont :\n" +
+            "?help exp\n" +
+            "?help evo\n" +
+            "?help shard\n" +
+            "?help type\n" +
+            "?help party\n" +
+            "?help heros";
+        sendEmbed(message, text, "Help");
+    }
+    else if (message.content == '?help exp') {
+        let text = "?exp lvl : donne le nombre d'exp nécessaire pour passer du lvl 1 au niveau indiquer(ne pas dépasser le lvl ou il faut limite break)\n" +
+            "?exp lvlMin lvlMax : donne le nombre d'exp nécessaire pour passer du lvl lvlMin au niveau lvlMax(ne pas dépasser le lvl ou il faut limite break)\n" +
+            "?exp lvlMin lvlMax rareté : donne le nombre d'exp nécessaire pour passer du lvl lvlMin au niveau lvlMax et le noimbre de shard pour la rareté donné si il faut limite break";
+        sendEmbed(message, text, "?help lvl");
+    }
+    else if (message.content == '?help evo') {
+        let text = "?evo NbEtoileMin NbEtoileMax rarete : donne les informations sur l'evolution de NbEtoileMin à NbEtoileMax pour une rareté rarete";
+        sendEmbed(message, text, "?help evo")
+    }
+    else if (message.content == '?help shard') {
+        let text = "?shard nbShard rarete : donne des informations sur l'obtention de nbShard pour d'une rareté donné"
+        sendEmbed(message, text, "?help shard")
+    }
+    else if (message.content == '?help type') {
+        let text = "?type : donne tout les types du jeu"
+        sendEmbed(message, text, "?help type");
+    }
+    else if (message.content == '?help party') {
+        let text = "?party : donne tout les party buff du jeu"
+        sendEmbed(message, text, "?help party");
+    }
+    else if (message.content == '?help heros') {
+        let text = "?heros : donne une liste de perso selon plusieurs filtre, type, rarte, party buff"
+        sendEmbed(message, text, "?help heros");
+    }
 
-    const emoji = client.emojis.find(emoji => emoji.name === "NotLikeThis");
-    message.channel.send("HELP " + emoji);
 }
 
 let evo = (message, Shard) => {
@@ -198,11 +232,6 @@ let type = (message, client) => {
     embed.setColor(0x00AE86);
     embed.setThumbnail("https://cdn.discordapp.com/attachments/804446503636041759/804740255928287243/Capture_d_Acran_2021-01-29_A__16.48.55-removebg-preview.png");
     message.channel.send({ embed });
-}
-
-let test = (message, client) => {
-    const emoji = client.emojis.find(emoji => emoji.name === "water");
-    sendEmbed(message, "water : " + emoji, "test");
 }
 
 let party = (message, Hero) => {
@@ -451,7 +480,6 @@ module.exports = {
     help,
     evo,
     shard,
-    test,
     type,
     party,
     heros

@@ -116,14 +116,10 @@ client.on("message", (message) => {
       else if (message.content.startsWith('?party')) {
         party(message, Hero);
       }
-
-
-
-
       else if (message.content.startsWith('?test')) {
         test(message, client);
       }
-      else {
+      else if (message.content.startsWith('?help')) {
         help(message, client);
       }
     }
