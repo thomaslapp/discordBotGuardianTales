@@ -115,9 +115,9 @@ client.on("message", (message) => {
       else if (message.content.startsWith('?party')) {
         party(message, Hero);
       }
-    }
-    else if (message.content.startsWith('?help')) {
-      help(message, client);
+      else if (message.content.startsWith('?help')) {
+        help(message, client);
+      }
     }
   }
 })
